@@ -1,7 +1,5 @@
 This is a fork from https://github.com/RenierM26. This fork has reversed engineered the protobuf pb2 files and recompiled with version 4.21. THis fixes the issues on newer versions of home assistant.
 
-
-
 # pyHyypApi
 API for ADT Secure Home and IDS Hyyp. There could be more variants but it's easy to add package names to the constants.py file.
 
@@ -9,15 +7,15 @@ How to use:
 
   1. Install:
 
-```pip install pyHyypApi```
+```pip install pyhyypapihawkmod```
 
   2.1. Login (ADT Secure Home):
 
 
 ```
-import pyhyypapi
+import pyhyypapihawkmod
 import json
-client = pyhyypapi.hyypclient(email="",password="")
+client = pyhyypapihawkmod.hyypclient(email="",password="")
 client.login()
 ```
 
@@ -26,9 +24,9 @@ client.login()
   2.2. Login (IDT Hyyp):
 
 ```
-import pyhyypapi
+import pyhyypapihawkmod
 import json
-client = pyhyypapi.hyypclient(email="",password="",pkg=pyhyypapi.HyypPkg.IDS_HYYP_GENERIC.value)
+client = pyhyypapihawkmod.hyypclient(email="",password="",pkg=pyhyypapihawkmod.HyypPkg.IDS_HYYP_GENERIC.value)
 client.login()
 
 ```
