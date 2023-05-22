@@ -1,5 +1,6 @@
-[![Donate](https://img.shields.io/badge/donate-Coffee-yellow.svg)](https://www.buymeacoffee.com/renierm)
-![Upload Python Package](https://github.com/RenierM26/pyHyypApi/workflows/Upload%20Python%20Package/badge.svg)
+This is a fork from https://github.com/RenierM26. This fork has reversed engineered the protobuf pb2 files and recompiled with version 4.21. THis fixes the issues on newer versions of home assistant.
+
+
 
 # pyHyypApi
 API for ADT Secure Home and IDS Hyyp. There could be more variants but it's easy to add package names to the constants.py file.
