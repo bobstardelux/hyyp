@@ -72,32 +72,20 @@ class HyypAlarmInfos:
         return _response
 
 
-    def _zone_states(self, site_id: int) -> Any:
+    def _triggered_zones(self, site_id: int) -> Any:
            
        #### I still need to limit the zones per site#### <<<>>>><<<>>>< so that multiple sites are possible.
         ### currenlty it doesn't iterate zones per site
-        
-        
-        zonestate = []
-        for zone in self._sync_info["zones"]:
-            zonestate.append({
-                "id" : zone["id"], 
-                "name" : zone["name"],
-                "trigger" : 0
-                })
-
+                
+        triggeredZoneIds = []
         _new_notifications = self._new_notifications(site_id=site_id)
         
         for _notification in _new_notifications:
             if _notification['eventNumber'] != 5:
                 continue
-            print(_notification['eventNumber'])       
-            for zone in zonestate:
-                if zone['id'] == _notification['zoneId']:
-                    zone['trigger'] = 1
-                    break
-        
-        _response = zonestate
+            triggeredZoneIds.append(_notification['zoneId'])  
+                 
+        _response = triggeredZoneIds
         
         return _response
      
@@ -116,9 +104,12 @@ class HyypAlarmInfos:
         partition_ids = {
             partition["id"]: partition for partition in self._sync_info["partitions"]
         }
-
+        
+        
         for site in site_ids:
-
+            
+            triggered_zones = self._triggered_zones(site_id=site)
+            
             # Add last site notification.
             _last_notice = self._last_notice(site_id=site)
             site_ids[site]["lastNoticeTime"] = _last_notice["lastNoticeTime"]
@@ -143,6 +134,12 @@ class HyypAlarmInfos:
                     site_ids[site]["partitions"][partition]["zones"][zone][
                         "bypassed"
                     ] = bool(zone in self._state_info["bypassedZoneIds"])
+
+                # Add zone trigger info to zone.
+                for zone in site_ids[site]["partitions"][partition]["zones"]:
+                    site_ids[site]["partitions"][partition]["zones"][zone][
+                        "triggered"
+                    ] = bool(zone in triggered_zones)
 
                 # Add stay profile info.
                 site_ids[site]["partitions"][partition]["stayProfiles"] = {
