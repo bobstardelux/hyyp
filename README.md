@@ -15,7 +15,7 @@ How to use:
 ```
 import pyhyypapihawkmod
 import json
-client = pyhyypapihawkmod.hyypclient(email="",password="")
+client = pyhyypapihawkmod.HyypClient(email="",password="")
 client.login()
 ```
 
@@ -26,7 +26,7 @@ client.login()
 ```
 import pyhyypapihawkmod
 import json
-client = pyhyypapihawkmod.hyypclient(email="",password="",pkg=pyhyypapihawkmod.HyypPkg.IDS_HYYP_GENERIC.value)
+client = pyhyypapihawkmod.HyypClient(email="",password="",pkg=pyhyypapihawkmod.HyypPkg.IDS_HYYP_GENERIC.value)
 client.login()
 
 ```

@@ -8,6 +8,7 @@ from .constants import EventNumber
 if TYPE_CHECKING:
     from .client import HyypClient
 
+_last_notification_check_timestamp = 0
 
 class HyypAlarmInfos:
     """Initialize Hyyp alarm objects."""
@@ -40,11 +41,66 @@ class HyypAlarmInfos:
 
             _response = {
                 "lastNoticeTime": _last_event_datetime,
-                "lastNoticeName": EventNumber[str(_last_event)],
-            }
+                "lastNoticeName": EventNumber[str(_last_event)], 
+            }                                                    
 
         return _response
 
+
+
+    def _new_notifications(self, site_id: int) -> Any:
+
+        global _last_notification_check_timestamp   
+        _response = []
+
+        _notifications = self._client.site_notifications(
+            site_id=site_id)
+                
+        _current_timestamp = round(datetime.now().timestamp())
+            
+        for x in _notifications:
+            
+            _notification_timestamp = round(x['timestamp']/1000)
+            if _current_timestamp - _notification_timestamp > 120:
+                continue
+            if _notification_timestamp <= _last_notification_check_timestamp:
+                continue
+            _response.append(x)
+        
+        _last_notification_check_timestamp = _current_timestamp-1
+ 
+        return _response
+
+
+    def _zone_states(self, site_id: int) -> Any:
+           
+       #### I still need to limit the zones per site#### <<<>>>><<<>>>< so that multiple sites are possible.
+        ### currenlty it doesn't iterate zones per site
+        
+        
+        zonestate = []
+        for zone in self._sync_info["zones"]:
+            zonestate.append({
+                "id" : zone["id"], 
+                "name" : zone["name"],
+                "trigger" : 0
+                })
+
+        _new_notifications = self._new_notifications(site_id=site_id)
+        
+        for _notification in _new_notifications:
+            if _notification['eventNumber'] != 5:
+                continue
+            print(_notification['eventNumber'])       
+            for zone in zonestate:
+                if zone['id'] == _notification['zoneId']:
+                    zone['trigger'] = 1
+                    break
+        
+        _response = zonestate
+        
+        return _response
+     
     def _format_data(self) -> dict[Any, Any]:
         """Format data for Hass."""
 
