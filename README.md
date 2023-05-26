@@ -2,6 +2,10 @@ This is a fork from https://github.com/RenierM26. This fork has reversed enginee
 
 
 
+0.0.0.8
+
+Minor fix to capture lost notifications
+
 0.0.0.7
 
 Added feature: Binary sensor which shows which zone caused alarm trigger.
