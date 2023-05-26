@@ -67,7 +67,7 @@ class HyypAlarmInfos:
                 continue
             _response.append(x)
         
-        _last_notification_check_timestamp = _current_timestamp-1
+        _last_notification_check_timestamp = _current_timestamp
  
         return _response
 
