@@ -14,7 +14,7 @@ Added feature: Binary sensor which shows which zone caused alarm trigger.
 # pyHyypApi
 API for ADT Secure Home and IDS Hyyp. There could be more variants but it's easy to add package names to the constants.py file.
 
-How to use: 
+How to use:
 
   1. Install:
 
