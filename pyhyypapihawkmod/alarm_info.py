@@ -63,11 +63,11 @@ class HyypAlarmInfos:
             _notification_timestamp = round(x['timestamp']/1000)
             if _current_timestamp - _notification_timestamp > 120:
                 continue
-            if _notification_timestamp <= _last_notification_check_timestamp:
+            if _notification_timestamp <= (_last_notification_check_timestamp-30):
                 continue
             _response.append(x)
         
-        _last_notification_check_timestamp = _current_timestamp-1
+        _last_notification_check_timestamp = _current_timestamp
  
         return _response
 
