@@ -8,7 +8,6 @@ from .constants import EventNumber
 if TYPE_CHECKING:
     from .client import HyypClient
 
-_last_notification_check_timestamp = 0
 
 class HyypAlarmInfos:
     """Initialize Hyyp alarm objects."""
@@ -41,54 +40,11 @@ class HyypAlarmInfos:
 
             _response = {
                 "lastNoticeTime": _last_event_datetime,
-                "lastNoticeName": EventNumber[str(_last_event)], 
-            }                                                    
+                "lastNoticeName": EventNumber[str(_last_event)],
+            }
 
         return _response
 
-
-
-    def _new_notifications(self, site_id: int) -> Any:
-
-        global _last_notification_check_timestamp   
-        _response = []
-
-        _notifications = self._client.site_notifications(
-            site_id=site_id)
-                
-        _current_timestamp = round(datetime.now().timestamp())
-            
-        for x in _notifications:
-            
-            _notification_timestamp = round(x['timestamp']/1000)
-            if _current_timestamp - _notification_timestamp > 120:
-                continue
-            if _notification_timestamp <= (_last_notification_check_timestamp-30):
-                continue
-            _response.append(x)
-        
-        _last_notification_check_timestamp = _current_timestamp
- 
-        return _response
-
-
-    def _triggered_zones(self, site_id: int) -> Any:
-           
-       #### I still need to limit the zones per site#### <<<>>>><<<>>>< so that multiple sites are possible.
-        ### currenlty it doesn't iterate zones per site
-                
-        triggeredZoneIds = []
-        _new_notifications = self._new_notifications(site_id=site_id)
-        
-        for _notification in _new_notifications:
-            if _notification['eventNumber'] != 5:
-                continue
-            triggeredZoneIds.append(_notification['zoneId'])  
-                 
-        _response = triggeredZoneIds
-        
-        return _response
-     
     def _format_data(self) -> dict[Any, Any]:
         """Format data for Hass."""
 
@@ -104,12 +60,9 @@ class HyypAlarmInfos:
         partition_ids = {
             partition["id"]: partition for partition in self._sync_info["partitions"]
         }
-        
-        
+
         for site in site_ids:
-            
-            triggered_zones = self._triggered_zones(site_id=site)
-            
+
             # Add last site notification.
             _last_notice = self._last_notice(site_id=site)
             site_ids[site]["lastNoticeTime"] = _last_notice["lastNoticeTime"]
@@ -134,12 +87,6 @@ class HyypAlarmInfos:
                     site_ids[site]["partitions"][partition]["zones"][zone][
                         "bypassed"
                     ] = bool(zone in self._state_info["bypassedZoneIds"])
-
-                # Add zone trigger info to zone.
-                for zone in site_ids[site]["partitions"][partition]["zones"]:
-                    site_ids[site]["partitions"][partition]["zones"][zone][
-                        "triggered"
-                    ] = bool(zone in triggered_zones)
 
                 # Add stay profile info.
                 site_ids[site]["partitions"][partition]["stayProfiles"] = {
