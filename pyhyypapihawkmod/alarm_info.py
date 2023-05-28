@@ -76,11 +76,14 @@ class HyypAlarmInfos:
 
             for partition in partition_ids:
                 # Add zone info to partition.
-                site_ids[site]["partitions"][partition]["zones"] = {
-                    key: value
-                    for (key, value) in zone_ids.items()
-                    if key in site_ids[site]["partitions"][partition]["zoneIds"]
-                }
+                if partition not in site_ids[site]["partitions"]:
+                    continue
+                else:  
+                    site_ids[site]["partitions"][partition]["zones"] = {
+                        key: value
+                        for (key, value) in zone_ids.items()
+                        if key in site_ids[site]["partitions"][partition]["zoneIds"]
+                    }
 
                 # Add zone bypass info to zone.
                 for zone in site_ids[site]["partitions"][partition]["zones"]:
