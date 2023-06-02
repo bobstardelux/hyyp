@@ -751,8 +751,8 @@ class HyypClient:
     def trigger_automation(
         self,
         site_id: int,
-        pin: int | None = None,
         trigger_id: int | None = None,
+        pin: int | None = None,
     ) -> Any:
         """Trigger Alarm via API."""
 
