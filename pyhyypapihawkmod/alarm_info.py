@@ -60,7 +60,11 @@ class HyypAlarmInfos:
         partition_ids = {
             partition["id"]: partition for partition in self._sync_info["partitions"]
         }
-
+        
+        trigger_ids = {
+            trigger["id"]: trigger for trigger in self._sync_info["triggers"]
+        }
+        
         for site in site_ids:
 
             # Add last site notification.
@@ -68,6 +72,17 @@ class HyypAlarmInfos:
             site_ids[site]["lastNoticeTime"] = _last_notice["lastNoticeTime"]
             site_ids[site]["lastNoticeName"] = _last_notice["lastNoticeName"]
 
+            # Add triggers (PGM / Automations in APP)
+            for trigger_id in trigger_ids:
+                if trigger_id not in site_ids[site]["triggerIds"]:
+                    continue
+                else:
+                    site_ids[site]["triggers"] = {
+                        key: value
+                        for (key, value) in trigger_ids.items()            
+                    }
+                
+            
             # Add partition info.
             site_ids[site]["partitions"] = {
                 partition_id: partition_ids[partition_id]
