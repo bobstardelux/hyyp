@@ -49,6 +49,11 @@ TO Do:
 
 Changelog 
 
+1.0.3
+- Fixed a bug where stay profiles would mostly go to false even though stay profiles were armed.
+
+1.0.2
+- Fixed a bug where the parameters for certain items were swapped
 
 1.0.1
 
