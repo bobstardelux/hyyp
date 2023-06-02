@@ -119,9 +119,14 @@ class HyypAlarmInfos:
                 )
 
                 # Add partition stay_armed status.
+                site_ids[site]["partitions"][partition]["stayArmed"] = False
+                
                 for stay_profile in site_ids[site]["partitions"][partition][
                     "stayProfiles"
                 ]:
+                    if stay_profile not in self._state_info["armedStayProfileIds"]:
+                        continue
+                    
                     site_ids[site]["partitions"][partition]["stayArmed"] = bool(
                         stay_profile in self._state_info["armedStayProfileIds"]
                     )
