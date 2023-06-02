@@ -47,6 +47,14 @@ TO Do:
 - What zone caused arm/arm stay not to work. - Looks like GCM/Firebase push messages. Added GCM client...just run main program and register GCF code in function called register gcf. It works.
 
 
-Changelog 1.0.0
+Changelog 
+
+
+1.0.1
+
+- Added fix where setups with multiple sites would crash
+- Added the ability to find "automations" and also trigger the automations
+
+1.0.0
 
 Bumped main release to 1.0.0
